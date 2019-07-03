@@ -17,6 +17,7 @@
 xOD01 screen;
 Adafruit_APDS9960 apds;
 AsyncWebServer server(8080);
+AsyncWebSocket ws("/ws");
 
 #define RED 25
 #define GREEN 26
@@ -103,8 +104,6 @@ void setup() {
 }
 
 void loop() {
-  AsyncWebSocket ws("/ws");
-
   
   if (apds.readProximity() != 0) {
     distance = apds.readProximity();
