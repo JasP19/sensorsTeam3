@@ -1,0 +1,24 @@
+{
+  "name": "pubsub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "pubsub.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JasP19/sensorsTeam3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JasP19/sensorsTeam3/issues"
+  },
+  "homepage": "https://github.com/JasP19/sensorsTeam3#readme",
+  "dependencies": {
+    "@google-cloud/pubsub": "^0.30.1",
+    "express": "^4.17.1",
+    "ws": "^7.0.1"
+  }
+}
