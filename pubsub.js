@@ -1,36 +1,38 @@
 const WebSocket = require('ws')
-const wss = new WebSocket.Server({ port: 8080 })
-const Sensor = require('./sensor.js')
+const wss = new WebSocket.Server({ port: 8080, concurrencyLimit: 1000 })
 
 let team2Socket = null
-let sensorSockets = []
 
 wss.on('connection', ws => {
-  ws.on('message', data => {
-    if (data[0] === 's') {
-      data = parseInt(data[1])
-      sensorSockets.push(new Sensor(ws, data))
-      sensorSockets[findSensorPos(data)].socket.send('start')
-      sensorSockets[findSensorPos(data)].socket.on('message', event => {
-        console.log(data)
-        if (team2Socket) {
-          team2Socket.send(`{ 'SensorId': ${event} }`)
-        }
-        setTimeout(() => {
-          sensorSockets[findSensorPos(data)].socket.send('start')
-        }, 1000)
-      })
-    } else if (data === 'c') {
-      team2Socket = ws
-    }
+  ws.on('open', (event) => {
+    ws.send('start')
+    console.log('Socket opened')
   })
-})
-
-function findSensorPos (id) {
-  for (let i = 0; i < sensorSockets.length; i++) {
-    if (sensorSockets[i].id === id) {
-      return i
+  ws.on('message', data => {
+    console.log(data)
+    if (data[0] === 'c') {
+      team2Socket = ws
+      return
     }
-  }
-  return -1
-}
+
+    if (data[0] === 's') {
+      ws.send('start')
+      console.log('Sensor connected')
+      return
+    }
+
+    if (team2Socket) {
+      team2Socket.send(`{ 'SensorId': ${data} }`)
+    }
+
+    setTimeout(() => {
+      ws.send('start')
+    }, 1000)
+  })
+
+  ws.on('close', data => {
+    console.log('Socket closed')
+  })
+
+  ws.on('error', (event) => console.log(event))
+})
