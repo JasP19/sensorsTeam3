@@ -4,6 +4,7 @@
   "description": "",
   "main": "pubsub.js",
   "scripts": {
+    "start": "node pubsub.js",
     "test": "echo \"Error: no test specified\""
   },
   "repository": {
