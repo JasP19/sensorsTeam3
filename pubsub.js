@@ -1,6 +1,13 @@
+const express = require('express')
 const WebSocket = require('ws')
 const wss = new WebSocket.Server({ port: 8080, concurrencyLimit: 1000 })
+const app = express()
 console.log('Test')
+
+app.get('/', (req, res) => {
+  console.log('Server started')
+})
+// const router = app.Router()
 
 let team2Socket = null
 
